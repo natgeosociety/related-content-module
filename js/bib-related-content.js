@@ -540,49 +540,6 @@
       }
     },
 
-    getParameterByName: function(name, url) {
-        if (!url) url = window.location.href;
-        name = name.replace(/[\[\]]/g, "\\$&");
-        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-            results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
-    },
-
-    createParamsObj: function(url) {
-      var queryStringParams = url.split('?')[1];
-      var cleanParams = queryStringParams.split(/&/g);
-      var params = {};
-
-      for (param in cleanParams) {
-        var param = cleanParams[param];
-        var key = param.split('=')[0];
-        var value = param.split('=')[1];
-
-        if (value.indexOf('#') > -1) {
-          var cleanedValue = value.split('#')[0];
-          params[key] = cleanedValue;
-        } else {
-          params[key] = value;
-        };
-      };
-
-      return params;
-    },
-
-    createQueryStringObj: function(params, options) {
-      var diffArray = Object.keys(params).filter(function(k) { return params[k] !== options[k] }) ;
-      var queryStringObj = {};
-      if (diffArray.length > 0) {
-        for (var key = 0; key < diffArray.length; key++) {
-          var param = diffArray[key];
-          queryStringObj[param] = params[param]
-        }
-      };
-      return queryStringObj;
-    },
-
     getQueryStringParams: function(options, url) {
       if (url.indexOf("?") !== -1) {
         var params = BibblioUtils.createParamsObj(url);
@@ -595,8 +552,7 @@
     },
 
     isInUrl: function(url, string) {
-      var hasString = url.includes(string);
-      return hasString;
+      return url.indexOf(string) > 0;
     },
 
     /// Auto ingestion functions
